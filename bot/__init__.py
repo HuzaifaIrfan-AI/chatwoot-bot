@@ -28,7 +28,7 @@ bot_logger=logging.getLogger("bot")
 bot_logger.warning("bot Started")
 
 
-
+CONVERSATION_OPENED_CONTENT="Your chat is transferred to human. Please wait."
 
 def process_pending_user_messages(payload):
     account_id=payload["account_id"]
@@ -41,9 +41,16 @@ def process_pending_user_messages(payload):
     # bot_content=f"{name}: {content}"
     
     state = default_state()
+    state["conversation_id"] = str(conversation_id)
     state["user_content"] = content
     state = bot.invoke(state)
+    
+    open_conversation_state=state["open_conversation_state"]
     bot_content=state["bot_content"]
+    
+    if (open_conversation_state):
+        open_conversation_status(account_id, conversation_id)
+        bot_content=CONVERSATION_OPENED_CONTENT
     
     create_new_message(account_id, conversation_id, bot_content)
     
