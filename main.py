@@ -30,7 +30,7 @@ pending_user_messages_logger.warning("pending_user_messages_consumer Started")
 
 from bot import process_pending_user_messages
 
-def main():
+def check_producer():
     producer = Producer({'bootstrap.servers': KAFKA_URL})
     
     payload = {
@@ -54,6 +54,10 @@ def main():
     )
     producer.flush()
     
+
+def main():
+
+    check_producer()
     
     consumer = Consumer(conf)
     consumer.subscribe(['pending_user_messages'])

@@ -5,7 +5,7 @@ import json
 from chatwoot import create_new_message, open_conversation_status
 
 
-
+from bot.cache import update_cache,get_cache
 from bot.generation import generate
 
 from langgraph.graph import StateGraph, START, END
@@ -16,9 +16,15 @@ from bot.State import State, default_state
 
 graph_builder = StateGraph(State)
 
+graph_builder.add_node("get_cache", get_cache)
+graph_builder.add_node("update_cache", update_cache)
+
 graph_builder.add_node("generate", generate)
-graph_builder.add_edge(START, "generate")
-graph_builder.add_edge("generate", END)
+
+graph_builder.add_edge(START, "get_cache")
+graph_builder.add_edge("get_cache", "generate")
+graph_builder.add_edge("generate", "update_cache")
+graph_builder.add_edge("update_cache", END)
 bot = graph_builder.compile()
 
 import logging
