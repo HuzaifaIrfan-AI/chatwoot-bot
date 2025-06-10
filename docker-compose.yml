@@ -1,0 +1,33 @@
+services:
+  chatwoot_bot:
+    container_name: chatwoot_bot
+    build:
+      context: .
+      dockerfile: dockerfile
+      tags:
+        - "ghcr.io/huzaifairfan/chatwoot_bot:0.1"
+        
+    image: "ghcr.io/huzaifairfan/chatwoot_bot:0.1"
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    command: uv run main.py
+
+    volumes: 
+      - ./log:/app/log
+      
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    networks:
+      - kafka
+      - web
+
+
+networks:
+  kafka:
+    external: true
+  web:
+    external: true
