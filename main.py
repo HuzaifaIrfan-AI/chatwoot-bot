@@ -78,7 +78,8 @@ def main():
             print(f"Received message: key={key}, value={value}")
             payload=json.loads(value)
             
-
+            logging.info(json.dumps(payload))
+            
             ret=process_pending_user_messages(payload)
 
 

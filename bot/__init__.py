@@ -1,14 +1,9 @@
 
-import os
-KAFKA_URL = os.getenv("KAFKA_URL", "localhost:9092")
-print(f"KAFKA_URL at '{KAFKA_URL}'")
-
-from confluent_kafka import Producer, Consumer, KafkaException
-
-producer = Producer({'bootstrap.servers': KAFKA_URL})
 
 import json
-import logging
+
+from chatwoot import create_new_message
+
 
 def process_pending_user_messages(payload):
     account_id=payload["account_id"]
@@ -18,24 +13,5 @@ def process_pending_user_messages(payload):
     phonenumber=payload["phonenumber"]
     content=payload["content"]
     
-    
+    create_new_message(account_id, conversation_id, f"{name}: {content}")
 
-    payload={
-        "account_id":account_id,
-        "conversation_id":conversation_id,
-        "content":f"{name}: {content}"
-    }
-    # Serialize to JSON and send
-    producer.produce(
-        topic='create_new_message',
-        key=str(payload["conversation_id"]),
-        value=json.dumps(payload).encode('utf-8'),
-        callback=lambda err, msg, val=payload: (
-            print(f"❌ Failed to deliver: {err}") if err else print(
-                f"✅ {msg.topic()} Delivered: {val}")
-        )
-    )
-    producer.flush()
-    
-    logging.info(json.dumps(payload))
-    
