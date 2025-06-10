@@ -64,6 +64,7 @@ def generate(state: State):
     bot_logger.info("---GENERATE---")
 
     user_content = state["user_content"]
+    state_messages = state["messages"]
     
     bot_logger.info(f"user_content: {user_content}")
 
@@ -73,6 +74,9 @@ def generate(state: State):
          "content": SYSTEM_MESSAGE
          }
     ]
+    
+    for message in state_messages:
+        messages.append(message)
 
     context_message = {
         "role": "user",
