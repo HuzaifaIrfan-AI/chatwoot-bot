@@ -9,6 +9,12 @@ import json
 
 producer = Producer({'bootstrap.servers': KAFKA_URL})
 
+import logging
+chatwoot_logger=logging.getLogger("chatwoot")
+chatwoot_logger.warning("Chatwoot Producers Started")
+
+
+
 def create_new_message(account_id,conversation_id,content):
     
     payload={
@@ -22,7 +28,7 @@ def create_new_message(account_id,conversation_id,content):
         key=str(payload["conversation_id"]),
         value=json.dumps(payload).encode('utf-8'),
         callback=lambda err, msg, val=payload: (
-            print(f"❌ Failed to deliver: {err}") if err else print(
+            chatwoot_logger.error(f"❌ Failed to deliver: {err}") if err else chatwoot_logger.info(
                 f"✅ {msg.topic()} Delivered: {val}")
         )
     )
@@ -41,7 +47,7 @@ def open_conversation_status(account_id,conversation_id):
         key=str(payload["conversation_id"]),
         value=json.dumps(payload).encode('utf-8'),
         callback=lambda err, msg, val=payload: (
-            print(f"❌ Failed to deliver: {err}") if err else print(
+            chatwoot_logger.error(f"❌ Failed to deliver: {err}") if err else chatwoot_logger.info(
                 f"✅ {msg.topic()} Delivered: {val}")
         )
     )

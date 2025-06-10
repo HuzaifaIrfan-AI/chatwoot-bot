@@ -20,17 +20,12 @@ conf = {
 import json
 
 import logging
-import time
 
-# Configure logging
-logging.basicConfig(
-    filename='log/pending_user_messages.log',
-    filemode='a',
-    level=logging.INFO,
-    format='[%(asctime)s] [%(process)d] [%(levelname)s]  %(message)s'
-)
-logging.Formatter.converter = time.gmtime
-logging.warning("pending_user_messages_consumer Started")
+import logger_config
+pending_user_messages_logger=logging.getLogger("pending_user_messages")
+
+
+pending_user_messages_logger.warning("pending_user_messages_consumer Started")
 
 
 from bot import process_pending_user_messages
@@ -78,9 +73,9 @@ def main():
             print(f"Received message: key={key}, value={value}")
             payload=json.loads(value)
             
-            logging.info(json.dumps(payload))
-            
-            ret=process_pending_user_messages(payload)
+            pending_user_messages_logger.info(json.dumps(payload))
+            bot_content=process_pending_user_messages(payload)
+            pending_user_messages_logger.info(json.dumps(bot_content))
 
 
 
