@@ -7,6 +7,7 @@ from chatwoot import create_new_message, open_conversation_status
 
 from bot.cache import update_cache,get_cache
 from bot.generation import generate
+from bot.retrieval import retrieve
 
 from langgraph.graph import StateGraph, START, END
 
@@ -20,9 +21,11 @@ graph_builder.add_node("get_cache", get_cache)
 graph_builder.add_node("update_cache", update_cache)
 
 graph_builder.add_node("generate", generate)
+graph_builder.add_node("retrieve", retrieve)
 
 graph_builder.add_edge(START, "get_cache")
-graph_builder.add_edge("get_cache", "generate")
+graph_builder.add_edge("get_cache", "retrieve")
+graph_builder.add_edge("retrieve", "generate")
 graph_builder.add_edge("generate", "update_cache")
 graph_builder.add_edge("update_cache", END)
 bot = graph_builder.compile()

@@ -45,11 +45,11 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1")
 
 import logging
-bot_logger=logging.getLogger("bot")
+generator_logger=logging.getLogger("generator")
 
 
 
-bot_logger.info(f"Using OpenAI Model'{OPENAI_MODEL}'")
+generator_logger.info(f"Using OpenAI Model'{OPENAI_MODEL}'")
 from langchain_openai import ChatOpenAI
 llm = ChatOpenAI(
     model=OPENAI_MODEL,
@@ -61,12 +61,13 @@ llm = ChatOpenAI(
 
 
 def generate(state: State):
-    bot_logger.info("---GENERATE---")
+    generator_logger.info("---GENERATE---")
 
     user_content = state["user_content"]
     state_messages = state["messages"]
+    documents = state["documents"]
     
-    bot_logger.info(f"user_content: {user_content}")
+    generator_logger.info(f"user_content: {user_content}")
 
 
     messages = [
@@ -80,7 +81,8 @@ def generate(state: State):
 
     context_message = {
         "role": "user",
-        "content": f"""Context:
+        "content": f"""{documents}
+
 Question:
 {user_content}"""
     }
@@ -95,6 +97,6 @@ Question:
     except:
         bot_content = generation
 
-    bot_logger.info(f"bot_content: {bot_content}")
+    generator_logger.info(f"bot_content: {bot_content}")
     
     return {"bot_content": bot_content}
