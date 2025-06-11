@@ -50,7 +50,7 @@ def generate_and_store_vector_embeddings():
     retriever_logger.info(f"✅ vector store created and saved to '{PERSIST_DIRECTORY}'")
     
     
-
+import json
 
 from bot import State
 def retrieve(state: State):
@@ -59,8 +59,14 @@ def retrieve(state: State):
     user_content = state["user_content"]
 
     # Retrieval
-    documents = retriever.invoke(user_content)
-    state["documents"].extend(documents)
+    retrieved_documents = retriever.invoke(user_content)
+    
+    # retriever_logger.info(f"{retrieved_documents}") 
+    
+    for document in retrieved_documents:
+        state["documents"].append(document.page_content)
+    
+    # state["documents"].extend(documents)
     
     # retriever_logger.info(f"{state["documents"]}") 
     

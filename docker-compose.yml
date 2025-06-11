@@ -22,11 +22,32 @@ services:
       - "host.docker.internal:host-gateway"
 
     networks:
+      - chatwoot_bot
       - kafka
       - web
 
+    depends_on:
+      - redis
+
+  redis:
+    container_name: redis-chatwoot_bot
+    image: redis:7.4-alpine
+    restart: always
+    # ports:
+    #   - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass aa
+    volumes: 
+      - redis-chatwoot_bot:/data
+
+    networks:
+      - chatwoot_bot
+
+volumes:
+  redis-chatwoot_bot:
 
 networks:
+  chatwoot_bot:
+    driver: bridge
   kafka:
     external: true
   web:

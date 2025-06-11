@@ -1,21 +1,26 @@
-# Load the .env file
-from bot import process_pending_user_messages
-import logger_config
-import logging
+
+
 import json
 from confluent_kafka import Producer, Consumer, KafkaException
 import os
 import datetime
-import config
+
+
+# Load the .env file
 from dotenv import load_dotenv
 load_dotenv(override=True)
 
+import config
+
+import logging
+import logger_config
 
 UTC_TIME_NOW = str(datetime.datetime.now(tz=datetime.UTC))
 
 KAFKA_URL = os.getenv("KAFKA_URL", "localhost:9092")
 print(f"KAFKA_URL at '{KAFKA_URL}'")
 
+from bot import process_pending_user_messages
 
 conf = {
     'bootstrap.servers': KAFKA_URL,
