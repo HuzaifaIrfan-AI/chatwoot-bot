@@ -33,7 +33,7 @@ llm = ChatOpenAI(
 
 
 def generate(state: State):
-    generator_logger.info(f"{state["conversation_id"]}---GENERATE---")
+    generator_logger.info(f"[{state["conversation_id"]}] ---GENERATE---")
 
     user_content = state["user_content"]
     state_messages = state["messages"]

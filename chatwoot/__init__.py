@@ -29,7 +29,7 @@ def create_new_message(account_id,conversation_id,content):
         value=json.dumps(payload).encode('utf-8'),
         callback=lambda err, msg, val=payload: (
             chatwoot_logger.error(f"❌ Failed to deliver: {err}") if err else chatwoot_logger.info(
-                f"✅ {msg.topic()} Delivered: {val}")
+                f"[{val["conversation_id"]}] ✅ {msg.topic()} {val}")
         )
     )
     producer.flush()
@@ -48,7 +48,7 @@ def open_conversation_status(account_id,conversation_id):
         value=json.dumps(payload).encode('utf-8'),
         callback=lambda err, msg, val=payload: (
             chatwoot_logger.error(f"❌ Failed to deliver: {err}") if err else chatwoot_logger.info(
-                f"✅ {msg.topic()} Delivered: {val}")
+                f"[{val["conversation_id"]}] ✅ {msg.topic()} {val}")
         )
     )
     producer.flush()

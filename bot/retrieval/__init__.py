@@ -54,7 +54,7 @@ def generate_and_store_vector_embeddings():
 
 from bot import State
 def retrieve(state: State):
-    retriever_logger.info(f"{state["conversation_id"]}---RETRIEVE---")
+    retriever_logger.info(f"[{state["conversation_id"]}] ---RETRIEVE---")
     
     user_content = state["user_content"]
 

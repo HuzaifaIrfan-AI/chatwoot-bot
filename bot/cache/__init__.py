@@ -20,7 +20,7 @@ documents_cache={
 
 
 def get_cache(state: State):
-    bot_logger.info(f"{state["conversation_id"]}---Cache Get---")
+    bot_logger.info(f"[{state["conversation_id"]}] ---Cache Get---")
     
     conversation_id=state["conversation_id"]
     
@@ -38,7 +38,7 @@ def get_cache(state: State):
 
 
 def update_cache(state: State):
-    bot_logger.info(f"{state["conversation_id"]}---Cache Update---")
+    bot_logger.info(f"[{state["conversation_id"]}] ---Cache Update---")
     
     conversation_id=state["conversation_id"]
     user_content=state["user_content"]

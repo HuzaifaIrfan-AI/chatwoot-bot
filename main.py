@@ -1,17 +1,21 @@
 # Load the .env file
+from bot import process_pending_user_messages
+import logger_config
+import logging
+import json
+from confluent_kafka import Producer, Consumer, KafkaException
+import os
+import datetime
+import config
 from dotenv import load_dotenv
 load_dotenv(override=True)
 
-import config
 
-import datetime
 UTC_TIME_NOW = str(datetime.datetime.now(tz=datetime.UTC))
 
-import os
 KAFKA_URL = os.getenv("KAFKA_URL", "localhost:9092")
 print(f"KAFKA_URL at '{KAFKA_URL}'")
 
-from confluent_kafka import Producer, Consumer, KafkaException
 
 conf = {
     'bootstrap.servers': KAFKA_URL,
@@ -19,22 +23,16 @@ conf = {
     'auto.offset.reset': 'earliest'
 }
 
-import json
 
-import logging
-
-import logger_config
-pending_user_messages_logger=logging.getLogger("pending_user_messages")
+pending_user_messages_logger = logging.getLogger("pending_user_messages")
 
 
 pending_user_messages_logger.warning("pending_user_messages_consumer Started")
 
 
-from bot import process_pending_user_messages
-
 def check_producer():
     producer = Producer({'bootstrap.servers': KAFKA_URL})
-    
+
     payload = {
         "account_id": 1,
         "conversation_id": 1,
@@ -43,7 +41,7 @@ def check_producer():
         "phonenumber": None,
         "content": f"pending_user_messages test {UTC_TIME_NOW}"
     }
-    
+
     # Serialize to JSON and send
     producer.produce(
         topic='pending_user_messages',
@@ -55,12 +53,12 @@ def check_producer():
         )
     )
     producer.flush()
-    
+
 
 def main():
 
     check_producer()
-    
+
     consumer = Consumer(conf)
     consumer.subscribe(['pending_user_messages'])
 
@@ -77,19 +75,18 @@ def main():
             key = msg.key().decode('utf-8') if msg.key() else None
             value = msg.value().decode('utf-8') if msg.value() else None
             print(f"\nkey={key}, value={value}")
-            payload=json.loads(value)
-            
-            pending_user_messages_logger.info(json.dumps(payload))
-            bot_content=process_pending_user_messages(payload)
-            pending_user_messages_logger.info(json.dumps(bot_content))
+            payload = json.loads(value)
 
-
+            pending_user_messages_logger.info(
+                f"[{payload["conversation_id"]}] "+json.dumps(payload))
+            bot_content = process_pending_user_messages(payload)
+            pending_user_messages_logger.info(
+                f"[{payload["conversation_id"]}] "+json.dumps(bot_content))
 
     except KeyboardInterrupt:
         print("Interrupted by user")
     finally:
         consumer.close()
-
 
 
 if __name__ == "__main__":
