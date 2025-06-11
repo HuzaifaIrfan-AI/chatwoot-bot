@@ -2,6 +2,8 @@
 from dotenv import load_dotenv
 load_dotenv(override=True)
 
+import config
+
 import datetime
 UTC_TIME_NOW = str(datetime.datetime.now(tz=datetime.UTC))
 

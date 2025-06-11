@@ -3,6 +3,9 @@
 from dotenv import load_dotenv
 load_dotenv(override=True)
 
+
+import config
+
 import logger_config
 
 from bot import process_pending_user_messages
