@@ -62,4 +62,7 @@ def retrieve(state: State):
     documents = retriever.invoke(user_content)
     state["documents"].extend(documents)
     
-    return {"documents": state["documents"]}
+    # retriever_logger.info(f"{state["documents"]}") 
+    
+    return 
+    # return {"documents": state["documents"]}
