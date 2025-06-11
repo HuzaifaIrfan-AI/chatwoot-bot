@@ -76,7 +76,7 @@ def main():
 
             key = msg.key().decode('utf-8') if msg.key() else None
             value = msg.value().decode('utf-8') if msg.value() else None
-            print(f"Received message: key={key}, value={value}")
+            print(f"\nkey={key}, value={value}")
             payload=json.loads(value)
             
             pending_user_messages_logger.info(json.dumps(payload))

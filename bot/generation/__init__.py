@@ -39,6 +39,8 @@ def generate(state: State):
     state_messages = state["messages"]
     documents = state["documents"]
     
+    # generator_logger.info(f"'''{documents}\n\n'''")
+    
     generator_logger.info(f"user_content: {user_content}")
 
 
