@@ -8,26 +8,22 @@ import config
 
 import logger_config
 
-from bot import process_pending_user_messages
+from bot.State import State, default_state
+
+from bot import bot
 
 def main():
         
     while(1):
         user_content=input("\nUser: ")
 
-        payload = {
-            "account_id": 1,
-            "conversation_id": 1,
-            "name": "User",
-            "email": None,
-            "phonenumber": None,
-            "content": user_content
-        }
-        
-        bot_content=process_pending_user_messages(payload)
-        
+        state = default_state()
+        state["conversation_id"] = str(1)
+        state["user_content"] = user_content
+        state = bot.invoke(state)
+        bot_content=state["bot_content"]
+
         print(f"Bot: {bot_content}")
-        
         
             
 
