@@ -4,6 +4,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
 from State import State, default_state
 
+import logging
+
+bot_logger=logging.getLogger("bot")
+
 
 messages_cache={
     
@@ -14,7 +18,10 @@ documents_cache={
 }
 
 
+
 def get_cache(state: State):
+    bot_logger.info(f"{state["conversation_id"]}---Cache Get---")
+    
     conversation_id=state["conversation_id"]
     
     
@@ -31,6 +38,8 @@ def get_cache(state: State):
 
 
 def update_cache(state: State):
+    bot_logger.info(f"{state["conversation_id"]}---Cache Update---")
+    
     conversation_id=state["conversation_id"]
     user_content=state["user_content"]
     bot_content=state["bot_content"]
