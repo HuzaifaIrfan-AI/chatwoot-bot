@@ -5,7 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 from bot import bot
 
 if __name__ == "__main__":
-    png_bytes = bot.get_graph().draw_png()  # Returns a graphviz.Digraph object
+    png_bytes = bot.get_graph().draw_mermaid_png()
     # Write the bytes to a file
     with open("langgraph_output.png", "wb") as f:
         f.write(png_bytes)
