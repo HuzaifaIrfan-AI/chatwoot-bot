@@ -28,22 +28,47 @@ services:
 
     depends_on:
       - redis
+      - qdrant
 
   redis:
     container_name: redis-chatwoot_bot
-    image: redis:7.4-alpine
+    image: redis/redis-stack:7.4.0-v5
     restart: always
-    # ports:
-    #   - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass aa
+    ports:
+      - '16379:6379'
+    command: redis-stack-server --save 20 1 --loglevel warning --requirepass aa
     volumes: 
       - redis-chatwoot_bot:/data
 
     networks:
       - chatwoot_bot
 
+  qdrant:
+    container_name: qdrant-chatwoot_bot
+    image: qdrant/qdrant:latest
+    ports:
+      - "16333:6333"
+      - "16334:6334"
+    volumes:
+      - ./qdrant_storage:/qdrant/storage:z
+
+    restart: unless-stopped
+    environment:
+      - QDRANT__SERVICE__GRPC_PORT=6334
+      - QDRANT__SERVICE__HTTP_PORT=6333
+      - QDRANT__STORAGE__PATH=/qdrant/storage
+      - QDRANT__STORAGE__OPTIMIZE_ON_STARTUP=true
+      - QDRANT__LOG_LEVEL=info
+      - QDRANT__SERVICE__WORKERS=4
+    networks:
+      - chatwoot_bot
+
+
 volumes:
   redis-chatwoot_bot:
+
+
+  
 
 networks:
   chatwoot_bot:

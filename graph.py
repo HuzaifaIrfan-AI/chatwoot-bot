@@ -1,6 +1,6 @@
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
+# Load the .env file
+from dotenv import load_dotenv
+load_dotenv(override=True)
 
 from bot import bot
 

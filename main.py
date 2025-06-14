@@ -20,7 +20,6 @@ UTC_TIME_NOW = str(datetime.datetime.now(tz=datetime.UTC))
 KAFKA_URL = os.getenv("KAFKA_URL", "localhost:9092")
 print(f"KAFKA_URL at '{KAFKA_URL}'")
 
-from bot import process_pending_user_messages
 
 conf = {
     'bootstrap.servers': KAFKA_URL,
@@ -33,6 +32,42 @@ pending_user_messages_logger = logging.getLogger("pending_user_messages")
 
 
 pending_user_messages_logger.warning("pending_user_messages_consumer Started")
+
+
+from bot import bot
+from chatwoot import open_conversation_status, create_new_message
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
+
+
+CONVERSATION_OPENED_CONTENT="Your chat is transferred to human. Please wait."
+
+def process_pending_user_messages(payload):
+    account_id=payload["account_id"]
+    conversation_id=payload["conversation_id"]
+    name=payload["name"]
+    email=payload["email"]
+    phonenumber=payload["phonenumber"]
+    user_content=payload["content"]
+    
+
+    config = {"configurable": {"thread_id": conversation_id}}
+    inputs = {"open_conversation_state": False, "conversation_id":conversation_id, "messages": [HumanMessage(user_content)]}
+
+    final_state = bot.invoke(inputs, config=config)
+    
+    bot_content = final_state["messages"][-1].content
+
+    open_conversation_state=final_state["open_conversation_state"]
+    
+    if (open_conversation_state):
+        open_conversation_status(account_id, conversation_id)
+        bot_content=CONVERSATION_OPENED_CONTENT
+    
+    create_new_message(account_id, conversation_id, bot_content)
+    
+    return bot_content
+
+
 
 
 def check_producer():

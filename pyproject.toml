@@ -11,8 +11,11 @@ dependencies = [
     "langchain-chroma>=0.2.3",
     "langchain-community>=0.3.23",
     "langchain-core>=0.3.56",
+    "langchain-mcp-adapters>=0.1.7",
     "langchain-openai>=0.3.16",
     "langchain-text-splitters>=0.3.8",
     "langgraph>=0.4.1",
+    "langgraph-checkpoint-redis>=0.0.6",
+    "qdrant-client>=1.14.2",
     "redis>=6.2.0",
 ]

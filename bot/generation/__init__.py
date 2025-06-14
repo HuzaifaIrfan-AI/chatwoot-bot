@@ -1,28 +1,19 @@
-from bot import State
-import json
+
+
+
+
+# 3. Define a simple chat node using OpenAI
+
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
+# from langchain.schema import SystemMessage, HumanMessage , AIMessage
 import os
-import logging
 
-DEFAULT_SYSTEM_MESSAGE="""
-You are an AI Chat Bot at Middlehost Webhosting Platform
-"""
-
-
-SYSTEM_MESSAGE = os.getenv("SYSTEM_MESSAGE", DEFAULT_SYSTEM_MESSAGE)
-
+from bot.State import BotState
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1")
 
-import logging
-generator_logger=logging.getLogger("generator")
-
-# generator_logger.info(f"SYSTEM_MESSAGE: '''{SYSTEM_MESSAGE}'''")
-
-
-
-generator_logger.info(f"Using OpenAI Model'{OPENAI_MODEL}'")
-from langchain_openai import ChatOpenAI
 llm = ChatOpenAI(
     model=OPENAI_MODEL,
     temperature=0.1,
@@ -30,47 +21,34 @@ llm = ChatOpenAI(
 )
 
 
+DEFAULT_SYSTEM_CONTENT="""
+You are an AI Chat Bot at Middlehost Webhosting Platform
+"""
 
 
-def generate(state: State):
-    generator_logger.info(f"[{state["conversation_id"]}] ---GENERATE---")
+SYSTEM_CONTENT = os.getenv("SYSTEM_CONTENT", DEFAULT_SYSTEM_CONTENT)
 
-    user_content = state["user_content"]
-    state_messages = state["messages"]
-    documents = state["documents"]
+
+SYSTEM_MESSAGE=SystemMessage(SYSTEM_CONTENT)
+
+import logging
+generation_logger=logging.getLogger("generation")
+
+# generation_logger.info(f"SYSTEM_CONTENT: '''{SYSTEM_CONTENT}'''")
+
+generation_logger.info(f"Using OpenAI Model'{OPENAI_MODEL}'")
+
+
+def generation_node(state: BotState) -> BotState:
     
-    # generator_logger.info(f"{state["documents"]}") 
+    generation_logger.info(f"[{state["conversation_id"]}] ---GENERATE---")
+    retrieved_documents = state.get("retrieved_documents", [])
     
-    generator_logger.info(f"user_content: {user_content}")
-
-
-    messages = [
-        {"role": "system",
-         "content": SYSTEM_MESSAGE
-         }
-    ]
+    retrieved_documents_context="retrieved_documents_context:\n"
+    retrieved_documents_context += "\n ".join(retrieved_documents)
+    retrieved_documents_message = HumanMessage(content=retrieved_documents_context)
     
-    for message in state_messages:
-        messages.append(message)
-
-    context_message = {
-        "role": "user",
-        "content": f"""{documents}
-
-Question:
-{user_content}"""
-    }
-
-    messages.append(context_message)
-
-    generation = llm.invoke(messages)
-
-
-    try:
-        bot_content = generation.content
-    except:
-        bot_content = generation
-
-    generator_logger.info(f"bot_content: {bot_content}")
+    messages = state.get("messages", [])
+    response = llm.invoke([SYSTEM_MESSAGE]+messages+[retrieved_documents_message])  
     
-    return {"bot_content": bot_content}
+    return {"messages": [response]}

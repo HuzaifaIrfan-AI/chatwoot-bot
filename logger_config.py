@@ -24,17 +24,17 @@ handler.setFormatter(logging.Formatter('[%(asctime)s] [%(process)d] [%(levelname
 handler.formatter.converter=time.gmtime
 bot_logger.addHandler(handler)
 
-retriever_logger=logging.getLogger("retriever")
-retriever_logger.setLevel(logging.INFO)  # Or DEBUG if needed
-handler=logging.FileHandler('log/retriever.log',mode="a")
+retrieval_logger=logging.getLogger("retrieval")
+retrieval_logger.setLevel(logging.INFO)  # Or DEBUG if needed
+handler=logging.FileHandler('log/retrieval.log',mode="a")
 handler.setFormatter(logging.Formatter('[%(asctime)s] [%(process)d] [%(levelname)s]  %(message)s'))
 handler.formatter.converter=time.gmtime
-retriever_logger.addHandler(handler)
+retrieval_logger.addHandler(handler)
 
 
-generator_logger=logging.getLogger("generator")
-generator_logger.setLevel(logging.INFO)  # Or DEBUG if needed
-handler=logging.FileHandler('log/generator.log',mode="a")
+generation_logger=logging.getLogger("generation")
+generation_logger.setLevel(logging.INFO)  # Or DEBUG if needed
+handler=logging.FileHandler('log/generation.log',mode="a")
 handler.setFormatter(logging.Formatter('[%(asctime)s] [%(process)d] [%(levelname)s]  %(message)s'))
 handler.formatter.converter=time.gmtime
-generator_logger.addHandler(handler)
+generation_logger.addHandler(handler)
