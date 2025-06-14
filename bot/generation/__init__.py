@@ -46,7 +46,7 @@ def generation_node(state: BotState) -> BotState:
     
     retrieved_documents_context="retrieved_documents_context:\n"
     retrieved_documents_context += "\n ".join(retrieved_documents)
-    retrieved_documents_message = HumanMessage(content=retrieved_documents_context)
+    retrieved_documents_message = SystemMessage(content=retrieved_documents_context)
     
     messages = state.get("messages", [])
     response = llm.invoke([SYSTEM_MESSAGE]+messages+[retrieved_documents_message])  
