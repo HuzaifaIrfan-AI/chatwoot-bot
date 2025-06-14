@@ -28,12 +28,13 @@ from qdrant_client.models import Distance, VectorParams
 
 # client = QdrantClient(":memory:")  # Or use `host="localhost", port=6333`
 
-Qdrant_URL = os.getenv("Qdrant_URL", "http://localhost:6333")
-retrieval_logger.info(f"Qdrant_URL at '{Qdrant_URL}'")
-client = QdrantClient(Qdrant_URL)
+QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
+retrieval_logger.info(f"QDRANT_URL at '{QDRANT_URL}'")
+client = QdrantClient(QDRANT_URL)
 
 collection_name="middlehost"
-MAX_DOCUMENTS_RETRIEVAL=3
+
+DOCUMENTS_RETRIEVAL_LIMIT = int(os.getenv("DOCUMENTS_RETRIEVAL_LIMIT", "3"))
 
 def retrieval_node(state: BotState):
     retrieval_logger.info(f"[{state["conversation_id"]}] ---RETRIEVE---")
@@ -41,7 +42,7 @@ def retrieval_node(state: BotState):
     query = state["messages"][-1].content
     vector = embedding_function.embed_query(query)
     
-    results = client.query_points(collection_name, query=vector, limit=MAX_DOCUMENTS_RETRIEVAL)
+    results = client.query_points(collection_name, query=vector, limit=DOCUMENTS_RETRIEVAL_LIMIT)
     # print(results)
     # context="context:\n"
     # context += "\n ".join([r.payload["information"] for r in results.points])

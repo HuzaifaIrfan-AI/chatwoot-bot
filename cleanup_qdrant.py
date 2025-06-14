@@ -7,9 +7,9 @@ from qdrant_client import QdrantClient
 # client = QdrantClient(":memory:")  # Or use `host="localhost", port=6333`
 import os
 
-Qdrant_URL = os.getenv("Qdrant_URL", "http://localhost:6333")
-print(f"Qdrant_URL at '{Qdrant_URL}'")
-client = QdrantClient(Qdrant_URL)
+QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
+print(f"QDRANT_URL at '{QDRANT_URL}'")
+client = QdrantClient(QDRANT_URL)
 collection_name="middlehost"
 
 if client.collection_exists(collection_name=collection_name):
