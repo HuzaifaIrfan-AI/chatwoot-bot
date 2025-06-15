@@ -3,8 +3,9 @@
 ## Create .env
 ```sh
 cp .env.example .env
-nano .env
 ```
+- Add OPENAI_API_KEY in .env
+
 
 ## Create Vector Embeddings
 ```sh
