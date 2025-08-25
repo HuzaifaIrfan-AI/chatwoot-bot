@@ -8,8 +8,8 @@ from bot.State import BotState
 from bot.generation import generation_node
 from bot.retrieval import retrieval_node
 
-import logging
-bot_logger=logging.getLogger("bot")
+from logger import bot_logger
+
 bot_logger.warning("Bot Started")
 
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")

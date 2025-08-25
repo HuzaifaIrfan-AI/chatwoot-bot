@@ -13,8 +13,7 @@ OPENAI_EMBEDDINGS_MODEL = os.getenv("OPENAI_EMBEDDINGS_MODEL", "text-embedding-3
 
 
 
-import logging
-retrieval_logger=logging.getLogger("retrieval")
+from logger import retrieval_logger
 
 retrieval_logger.info(f"Using OpenAI Embedding'{OPENAI_EMBEDDINGS_MODEL}'")
 

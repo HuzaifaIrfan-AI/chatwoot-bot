@@ -31,8 +31,7 @@ SYSTEM_CONTENT = os.getenv("SYSTEM_CONTENT", DEFAULT_SYSTEM_CONTENT)
 
 SYSTEM_MESSAGE=SystemMessage(SYSTEM_CONTENT)
 
-import logging
-generation_logger=logging.getLogger("generation")
+from logger import generation_logger
 
 # generation_logger.info(f"SYSTEM_CONTENT: '''{SYSTEM_CONTENT}'''")
 

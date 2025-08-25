@@ -5,7 +5,7 @@ load_dotenv(override=True)
 
 import config
 
-import logger_config
+import logger
 
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage

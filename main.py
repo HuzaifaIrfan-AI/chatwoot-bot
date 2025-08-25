@@ -12,8 +12,7 @@ load_dotenv(override=True)
 
 import config
 
-import logging
-import logger_config
+from logger import pending_user_messages_logger
 
 UTC_TIME_NOW = str(datetime.datetime.now(tz=datetime.UTC))
 
@@ -27,8 +26,6 @@ conf = {
     'auto.offset.reset': 'earliest'
 }
 
-
-pending_user_messages_logger = logging.getLogger("pending_user_messages")
 
 
 pending_user_messages_logger.warning("pending_user_messages_consumer Started")

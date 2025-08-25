@@ -9,8 +9,8 @@ import json
 
 producer = Producer({'bootstrap.servers': KAFKA_URL})
 
-import logging
-chatwoot_logger=logging.getLogger("chatwoot")
+from logger import chatwoot_logger
+
 chatwoot_logger.warning("Chatwoot Producers Started")
 
 

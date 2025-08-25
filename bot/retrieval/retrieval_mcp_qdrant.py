@@ -7,8 +7,7 @@ import os
 from bot.State import BotState
 
 
-import logging
-retrieval_logger=logging.getLogger("retrieval")
+from logger import retrieval_logger
 
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langgraph.prebuilt import create_react_agent
