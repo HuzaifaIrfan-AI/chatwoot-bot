@@ -2,6 +2,8 @@
 # chatwoot-bot
 **`Chatwoot Bot Kafka Bridge Langgraph RAG Processor`**
 
+https://github.com/HuzaifaIrfan-Web/chatwoot-webhook
+
 <!-- •[Link](#)
 
 <hr>
@@ -13,14 +15,21 @@
 ![overview](overview.drawio.png)
 
 -->
+
+# 🚀 Usage
+
 ## Create .env
 ```sh
 cp .env.example .env
 ```
 - Add OPENAI_API_KEY in .env
 
+## Copy example Markdown files in data/
+```sh
+cp -r example_data/ data/
+```
 
-## Create Vector Embeddings and Store them to qdrant DB
+## Create Vector Embeddings from markdown files in data/*.md and Store them to qdrant DB
 ```sh
 sh vectorize.sh
 ```
