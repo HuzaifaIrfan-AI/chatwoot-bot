@@ -29,20 +29,35 @@ cp .env.example .env
 cp -r example_data/ data/
 ```
 
-## Create Vector Embeddings from markdown files in data/*.md and Store them to qdrant DB
-```sh
-sh vectorize.sh
-```
-
 ## Copy and edit example config
 ```sh
 cp config.py.example config.py
+```
+
+## Create Vector Embeddings from markdown files in data/*.md and Store them to qdrant DB
+```sh
+sh vectorize.sh
 ```
 
 ## Run Docker
 ```sh
 docker compose up --build
 ```
+
+# 🛠️ Development
+
+## Create Vector Embeddings from markdown files in data/*.md and Store them to local qdrant DB
+```sh
+uv run vectorize_qdrant.py
+```
+
+## Run CLI Chat
+```sh
+uv run chat.py
+```
+
+
+
 
 
 # 🤝🏻 Connect with Me
