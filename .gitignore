@@ -196,3 +196,4 @@ cython_debug/
 vector_store*/
 qdrant_storage/
 data/
+config.py

@@ -34,6 +34,11 @@ cp -r example_data/ data/
 sh vectorize.sh
 ```
 
+## Copy and edit example config
+```sh
+cp config.py.example config.py
+```
+
 ## Run Docker
 ```sh
 docker compose up --build
