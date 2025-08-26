@@ -2,7 +2,8 @@
 # chatwoot-bot
 **`Chatwoot Bot Kafka Bridge Langgraph RAG Processor`**
 
-https://github.com/HuzaifaIrfan-Web/chatwoot-webhook
+- https://github.com/HuzaifaIrfan-Infrastructure/kafka-dev
+- https://github.com/HuzaifaIrfan-Web/chatwoot-webhook
 
 <!-- •[Link](#)
 
@@ -45,6 +46,9 @@ docker compose up --build
 ```
 
 # 🛠️ Development
+
+- https://github.com/HuzaifaIrfan-Infrastructure/redis-dev
+- https://github.com/HuzaifaIrfan-AI/qdrant-dev
 
 ## Create Vector Embeddings from markdown files in data/*.md and Store them to local qdrant DB
 ```sh
