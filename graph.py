@@ -1,7 +1,3 @@
-# Load the .env file
-from dotenv import load_dotenv
-load_dotenv(override=True)
-
 from bot import bot
 
 if __name__ == "__main__":

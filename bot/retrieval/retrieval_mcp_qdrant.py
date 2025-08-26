@@ -20,8 +20,9 @@ client = MultiServerMCPClient({
   }
 })
 
+from settings import settings
 
-DOCUMENTS_RETRIEVAL_LIMIT = int(os.getenv("DOCUMENTS_RETRIEVAL_LIMIT", "3"))
+DOCUMENTS_RETRIEVAL_LIMIT = settings.DOCUMENTS_RETRIEVAL_LIMIT
 
 async def get_available_tools():
     tools = await client.get_tools()  # Fetches all tools from all connected MCP servers

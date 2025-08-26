@@ -1,16 +1,15 @@
-# Load the .env file
-from dotenv import load_dotenv
-load_dotenv(override=True)
+
 
 from qdrant_client import QdrantClient
 
 # client = QdrantClient(":memory:")  # Or use `host="localhost", port=6333`
 import os
 
-QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
-print(f"QDRANT_URL at '{QDRANT_URL}'")
+from settings import settings
+QDRANT_URL = settings.QDRANT_URL
+
 client = QdrantClient(QDRANT_URL)
-collection_name="middlehost"
+collection_name="rag"
 
 if client.collection_exists(collection_name=collection_name):
     client.delete_collection(collection_name=collection_name)

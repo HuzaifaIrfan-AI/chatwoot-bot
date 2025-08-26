@@ -7,8 +7,10 @@ import os
 from bot.State import BotState
 
 # Access environment variables
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-OPENAI_EMBEDDINGS_MODEL = os.getenv("OPENAI_EMBEDDINGS_MODEL", "text-embedding-3-small")
+from settings import settings
+
+OPENAI_API_KEY = settings.OPENAI_API_KEY
+OPENAI_EMBEDDINGS_MODEL = settings.OPENAI_EMBEDDINGS_MODEL
 
 
 
@@ -27,13 +29,14 @@ from qdrant_client.models import Distance, VectorParams
 
 # client = QdrantClient(":memory:")  # Or use `host="localhost", port=6333`
 
-QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
+QDRANT_URL = settings.QDRANT_URL
+
 retrieval_logger.info(f"QDRANT_URL at '{QDRANT_URL}'")
 client = QdrantClient(QDRANT_URL)
 
 collection_name="middlehost"
 
-DOCUMENTS_RETRIEVAL_LIMIT = int(os.getenv("DOCUMENTS_RETRIEVAL_LIMIT", "3"))
+DOCUMENTS_RETRIEVAL_LIMIT = settings.DOCUMENTS_RETRIEVAL_LIMIT
 
 def retrieval_node(state: BotState):
     retrieval_logger.info(f"[{state["conversation_id"]}] ---RETRIEVE---")

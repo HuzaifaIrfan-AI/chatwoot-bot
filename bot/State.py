@@ -5,8 +5,10 @@ from typing import List
 
 import os
 
-MAX_MESSAGES_CACHED = int(os.getenv("MAX_MESSAGES_CACHED", "5"))
-MAX_DOCUMENTS_CACHED = int(os.getenv("MAX_DOCUMENTS_CACHED", "5"))
+from settings import settings
+
+MAX_MESSAGES_CACHED = settings.MAX_MESSAGES_CACHED
+MAX_DOCUMENTS_CACHED = settings.MAX_DOCUMENTS_CACHED
 
 def add_and_trim_messages(prev: list[AnyMessage], new: list[AnyMessage]) -> list[AnyMessage]:
     combined = (prev or []) + new

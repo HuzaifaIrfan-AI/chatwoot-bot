@@ -6,19 +6,14 @@ import os
 import datetime
 
 
-# Load the .env file
-from dotenv import load_dotenv
-load_dotenv(override=True)
-
 import config
 
 from logger import pending_user_messages_logger
 
 UTC_TIME_NOW = str(datetime.datetime.now(tz=datetime.UTC))
 
-KAFKA_URL = os.getenv("KAFKA_URL", "localhost:9092")
-print(f"KAFKA_URL at '{KAFKA_URL}'")
-
+from settings import settings
+KAFKA_URL = settings.KAFKA_URL
 
 conf = {
     'bootstrap.servers': KAFKA_URL,

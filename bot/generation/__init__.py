@@ -11,8 +11,9 @@ import os
 
 from bot.State import BotState
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1")
+from settings import settings
+OPENAI_API_KEY = settings.OPENAI_API_KEY
+OPENAI_MODEL = settings.OPENAI_MODEL
 
 llm = ChatOpenAI(
     model=OPENAI_MODEL,
@@ -21,12 +22,8 @@ llm = ChatOpenAI(
 )
 
 
-DEFAULT_SYSTEM_CONTENT="""
-You are an AI Chat Bot at Middlehost Webhosting Platform
-"""
 
-
-SYSTEM_CONTENT = os.getenv("SYSTEM_CONTENT", DEFAULT_SYSTEM_CONTENT)
+from config import SYSTEM_CONTENT
 
 
 SYSTEM_MESSAGE=SystemMessage(SYSTEM_CONTENT)

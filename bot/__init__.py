@@ -11,10 +11,11 @@ from bot.retrieval import retrieval_node
 from logger import bot_logger
 
 bot_logger.warning("Bot Started")
+from settings import settings
 
-REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-REDIS_PORT = os.getenv("REDIS_PORT", "6379")
-REDIS_PASS = os.getenv("REDIS_PASS", "aa")
+REDIS_HOST = settings.REDIS_HOST
+REDIS_PORT = settings.REDIS_PORT
+REDIS_PASS = settings.REDIS_PASS
 # Connect to Redis with password (adjust accordingly)
 redis_client = redis.Redis(
     host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASS, db=0)

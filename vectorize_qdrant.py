@@ -1,16 +1,13 @@
 
-# Load the .env file
-from dotenv import load_dotenv
-load_dotenv(override=True)
-
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams
 
 # client = QdrantClient(":memory:")  # Or use `host="localhost", port=6333`
 import os
 
-QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
-print(f"QDRANT_URL at '{QDRANT_URL}'")
+from settings import settings
+QDRANT_URL = settings.QDRANT_URL
+
 client = QdrantClient(QDRANT_URL)
 
 collection_name="middlehost"
@@ -31,8 +28,8 @@ from langchain_openai.embeddings import OpenAIEmbeddings
 
 import os
 # Access environment variables
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-OPENAI_EMBEDDINGS_MODEL = os.getenv("OPENAI_EMBEDDINGS_MODEL", "text-embedding-3-small")
+OPENAI_API_KEY = settings.OPENAI_API_KEY
+OPENAI_EMBEDDINGS_MODEL = settings.OPENAI_EMBEDDINGS_MODEL
 
 embeddings_function=OpenAIEmbeddings(model = OPENAI_EMBEDDINGS_MODEL,api_key=OPENAI_API_KEY)
 
