@@ -29,7 +29,7 @@ cp .env.example .env
 cp -r example_data/ data/
 ```
 
-## Create Vector Embeddings from markdown files in data/g*.md and Store them to qdrant DB
+## Create Vector Embeddings from markdown files in data/*.md and Store them to qdrant DB
 ```sh
 sh vectorize.sh
 ```
