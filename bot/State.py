@@ -10,6 +10,11 @@ from settings import settings
 MAX_MESSAGES_CACHED = settings.MAX_MESSAGES_CACHED
 MAX_DOCUMENTS_CACHED = settings.MAX_DOCUMENTS_CACHED
 
+from logger import bot_logger
+
+bot_logger.warning(f"MAX_MESSAGES_CACHED {MAX_MESSAGES_CACHED}")
+bot_logger.warning(f"MAX_DOCUMENTS_CACHED {MAX_DOCUMENTS_CACHED}")
+
 def add_and_trim_messages(prev: list[AnyMessage], new: list[AnyMessage]) -> list[AnyMessage]:
     combined = (prev or []) + new
     return combined[-MAX_MESSAGES_CACHED:]

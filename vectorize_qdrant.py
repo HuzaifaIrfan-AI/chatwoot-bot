@@ -10,7 +10,7 @@ QDRANT_URL = settings.QDRANT_URL
 
 client = QdrantClient(QDRANT_URL)
 
-collection_name="middlehost"
+collection_name=settings.COLLECTION_NAME
 
 if not client.collection_exists(collection_name=collection_name):
     client.create_collection(
@@ -80,8 +80,10 @@ def get_store_documents():
 
 def main():
     get_store_documents()
+    print(f"Documents have been stored in collection {settings.COLLECTION_NAME} in Qdrant {settings.QDRANT_URL}")
 
 
 
 if __name__ == "__main__":
     main()
+

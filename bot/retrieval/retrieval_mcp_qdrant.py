@@ -49,16 +49,16 @@ async def retrieve_documents(query:str):
     return results[1:DOCUMENTS_RETRIEVAL_LIMIT+1]
 
 
+retrieval_logger.warning(f"DOCUMENTS_RETRIEVAL_LIMIT {DOCUMENTS_RETRIEVAL_LIMIT}")
 
-collection_name="mcp_middlehost"
 
 def retrieval_node(state: BotState):
-    retrieval_logger.info(f"[{state["conversation_id"]}] ---RETRIEVE---")
+    retrieval_logger.info(f"[{state['conversation_id']}] ---RETRIEVE---")
     
     query = state["messages"][-1].content
 
-    retrieved_documents= asyncio.run(retrieve_documents(query))
-    
+    retrieved_documents = asyncio.run(retrieve_documents(query))
+
     retrieval_logger.info(f"[{state['conversation_id']}] Retrieved {len(retrieved_documents)} documents")
     # retrieval_logger.info(f"[{state['conversation_id']}] Retrieved {retrieved_documents}")
     return {"retrieved_documents": retrieved_documents}

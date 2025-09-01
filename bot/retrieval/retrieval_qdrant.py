@@ -17,7 +17,7 @@ OPENAI_EMBEDDINGS_MODEL = settings.OPENAI_EMBEDDINGS_MODEL
 
 from logger import retrieval_logger
 
-retrieval_logger.info(f"Using OpenAI Embedding'{OPENAI_EMBEDDINGS_MODEL}'")
+retrieval_logger.warning(f"Using OpenAI Embedding'{OPENAI_EMBEDDINGS_MODEL}'")
 
 
 from langchain_openai.embeddings import OpenAIEmbeddings
@@ -31,16 +31,20 @@ from qdrant_client.models import Distance, VectorParams
 
 QDRANT_URL = settings.QDRANT_URL
 
-retrieval_logger.info(f"QDRANT_URL at '{QDRANT_URL}'")
+retrieval_logger.warning(f"QDRANT_URL at '{QDRANT_URL}'")
 client = QdrantClient(QDRANT_URL)
 
-collection_name="middlehost"
-
+collection_name=settings.COLLECTION_NAME
 DOCUMENTS_RETRIEVAL_LIMIT = settings.DOCUMENTS_RETRIEVAL_LIMIT
 
+
+retrieval_logger.warning(f"collection_name {collection_name}")
+retrieval_logger.warning(f"DOCUMENTS_RETRIEVAL_LIMIT {DOCUMENTS_RETRIEVAL_LIMIT}")
+
+
 def retrieval_node(state: BotState):
-    retrieval_logger.info(f"[{state["conversation_id"]}] ---RETRIEVE---")
-    
+    retrieval_logger.info(f"[{state['conversation_id']}] ---RETRIEVE---")
+
     query = state["messages"][-1].content
     vector = embedding_function.embed_query(query)
     
@@ -52,5 +56,5 @@ def retrieval_node(state: BotState):
     retrieved_documents= [r.payload["information"]for r in results.points]
     
     retrieval_logger.info(f"[{state['conversation_id']}] Retrieved {len(retrieved_documents)} documents")
-    # retrieval_logger.info(f"[{state['conversation_id']}] Retrieved {retrieved_documents}")
+    retrieval_logger.info(f"[{state['conversation_id']}] {retrieved_documents}")
     return {"retrieved_documents": retrieved_documents}

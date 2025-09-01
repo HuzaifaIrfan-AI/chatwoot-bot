@@ -18,6 +18,7 @@ class Settings(BaseSettings):
 
 
     QDRANT_URL: str = Field(default="http://qdrant:6333", alias="QDRANT_URL")
+    COLLECTION_NAME: str = Field(default="rag_bot", alias="COLLECTION_NAME")
 
     MAX_MESSAGES_CACHED: int = Field(default=50, alias="MAX_MESSAGES_CACHED")
     MAX_DOCUMENTS_CACHED: int = Field(default=6, alias="MAX_DOCUMENTS_CACHED")

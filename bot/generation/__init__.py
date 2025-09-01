@@ -46,5 +46,7 @@ def generation_node(state: BotState) -> BotState:
     
     messages = state.get("messages", [])
     response = llm.invoke([SYSTEM_MESSAGE]+messages+[retrieved_documents_message])  
+
+    generation_logger.info(f"[{state["conversation_id"]}] {response.content}")
     
     return {"messages": [response]}

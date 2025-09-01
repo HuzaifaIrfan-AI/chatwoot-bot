@@ -4,13 +4,16 @@ from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.redis import RedisSaver
 import redis
 
+
+from logger import bot_logger
+
+bot_logger.warning("---Bot Started---")
+
+
 from bot.State import BotState
 from bot.generation import generation_node
 from bot.retrieval import retrieval_node
 
-from logger import bot_logger
-
-bot_logger.warning("Bot Started")
 from settings import settings
 
 REDIS_HOST = settings.REDIS_HOST
