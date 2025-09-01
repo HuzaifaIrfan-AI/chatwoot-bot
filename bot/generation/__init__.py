@@ -32,7 +32,7 @@ from logger import generation_logger
 
 # generation_logger.info(f"SYSTEM_CONTENT: '''{SYSTEM_CONTENT}'''")
 
-generation_logger.info(f"Using OpenAI Model'{OPENAI_MODEL}'")
+generation_logger.warning(f"Using OpenAI Model'{OPENAI_MODEL}'")
 
 
 def generation_node(state: BotState) -> BotState:
