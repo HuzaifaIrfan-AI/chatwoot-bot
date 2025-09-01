@@ -11,19 +11,19 @@ from bot import bot
 
 def main():
     
-    conversation_id="1"
+    conversation_id="0"
     
     config = {"configurable": {"thread_id": conversation_id}}
         
     while(1):
-        user_content=input("\nUser: ")
+        user_content=input("\n-------- User: ")
 
         inputs = {"open_conversation_state": False, "conversation_id":conversation_id, "messages": [HumanMessage(user_content)]}
 
         final_state = bot.invoke(inputs, config=config)
         
         bot_content = final_state["messages"][-1].content
-        print(f"\nBot: {bot_content}")
+        print(f"\n-------- Bot: {bot_content}")
         
         # print(final_state)
         # print("Final Chat State:\n")
