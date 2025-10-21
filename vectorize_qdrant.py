@@ -72,7 +72,7 @@ def get_store_documents():
             documents.append(Document(page_content=content, metadata={"source": path}))
 
     # Step 3: Split documents
-    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=300)
     split_docs = splitter.split_documents(documents)
     
     print(split_docs)

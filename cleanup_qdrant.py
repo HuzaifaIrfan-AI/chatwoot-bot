@@ -9,7 +9,8 @@ from settings import settings
 QDRANT_URL = settings.QDRANT_URL
 
 client = QdrantClient(QDRANT_URL)
-collection_name="rag"
+
+collection_name=settings.COLLECTION_NAME
 
 if client.collection_exists(collection_name=collection_name):
     client.delete_collection(collection_name=collection_name)
