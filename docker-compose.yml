@@ -30,6 +30,13 @@ services:
       - redis
       - qdrant
 
+
+    healthcheck:
+      test: ["CMD", "bash", "-c", "pgrep -f 'uv run main.py' >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   redis:
     container_name: redis-chatwoot_bot
     image: redis/redis-stack:7.4.0-v5
@@ -43,6 +50,13 @@ services:
     networks:
       - chatwoot_bot
 
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "aa", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+      
   qdrant:
     container_name: qdrant-chatwoot_bot
     image: qdrant/qdrant:latest
@@ -62,7 +76,12 @@ services:
       - QDRANT__SERVICE__WORKERS=4
     networks:
       - chatwoot_bot
-
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/6333"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 volumes:
   redis-chatwoot_bot:

@@ -53,7 +53,7 @@ def retrieval_node(state: BotState):
     # context="context:\n"
     # context += "\n ".join([r.payload["information"] for r in results.points])
     
-    retrieved_documents= [r.payload["information"]for r in results.points]
+    retrieved_documents= [f"{r.payload}" for r in results.points]
     
     retrieval_logger.info(f"[{state['conversation_id']}] Retrieved {len(retrieved_documents)} documents")
     retrieval_logger.info(f"[{state['conversation_id']}] {retrieved_documents}")
