@@ -17,7 +17,7 @@ OPENAI_MODEL = settings.OPENAI_MODEL
 
 llm = ChatOpenAI(
     model=OPENAI_MODEL,
-    temperature=0.1,
+    temperature=0.5,
     openai_api_key=OPENAI_API_KEY
 )
 

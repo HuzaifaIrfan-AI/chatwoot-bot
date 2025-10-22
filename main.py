@@ -46,6 +46,7 @@ def process_pending_user_messages(payload):
     inputs = {"open_conversation_state": False, "conversation_id":conversation_id, "messages": [HumanMessage(user_content)]}
 
     final_state = bot.invoke(inputs, config=config)
+
     
     bot_content = final_state["messages"][-1].content
 
@@ -62,7 +63,7 @@ def process_pending_user_messages(payload):
 
 
 
-def check_producer():
+def test_consumer():
     producer = Producer({'bootstrap.servers': KAFKA_URL})
 
     payload = {
@@ -89,7 +90,7 @@ def check_producer():
 
 def main():
 
-    check_producer()
+    # test_consumer()
 
     consumer = Consumer(conf)
     consumer.subscribe(['pending_user_messages'])
@@ -104,17 +105,27 @@ def main():
             if msg.error():
                 raise KafkaException(msg.error())
 
-            key = msg.key().decode('utf-8') if msg.key() else None
-            value = msg.value().decode('utf-8') if msg.value() else None
-            print(f"\nkey={key}, value={value}")
-            payload = json.loads(value)
+            try:
+                key = msg.key().decode('utf-8') if msg.key() else None
+                value = msg.value().decode('utf-8') if msg.value() else None
+                print(f"\nkey={key}, value={value}")
+                payload = json.loads(value)
+            except Exception as e:
+                pending_user_messages_logger.error(f"[{key}] Error loading message: {str(e)}")
+                continue
+                
 
-            pending_user_messages_logger.info(
-                f"[{payload["conversation_id"]}] "+json.dumps(payload))
-            bot_content = process_pending_user_messages(payload)
-            pending_user_messages_logger.info(
-                f"[{payload["conversation_id"]}] "+json.dumps(bot_content))
-
+            try:
+                pending_user_messages_logger.info(
+                    f"[{payload["conversation_id"]}] "+json.dumps(payload))
+                bot_content = process_pending_user_messages(payload)
+                pending_user_messages_logger.info(
+                    f"[{payload["conversation_id"]}] "+json.dumps(bot_content))
+            except Exception as e:
+                pending_user_messages_logger.error(
+                    f"[{key}] Error processing message: {str(e)}")
+                continue
+                
     except KeyboardInterrupt:
         print("Interrupted by user")
     finally:
