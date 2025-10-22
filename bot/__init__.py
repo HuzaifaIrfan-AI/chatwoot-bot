@@ -12,7 +12,7 @@ bot_logger.warning("---Bot Started---")
 
 from bot.State import BotState
 from bot.generation import generation_node
-from bot.retrieval import retrieval_node
+from bot.retrieval import retrieval_node, query_rewriter_node
 
 from settings import settings
 
@@ -34,12 +34,14 @@ redis_cache.setup()
 # 4. Define a simple graph with one loop
 builder = StateGraph(BotState)
 
+builder.add_node("query_rewriter", query_rewriter_node)
 builder.add_node("retrieval", retrieval_node)
 builder.add_node("generation", generation_node)
 
 
 # Graph structure
-builder.set_entry_point("retrieval")
+builder.set_entry_point("query_rewriter")
+builder.add_edge("query_rewriter", "retrieval")
 builder.add_edge("retrieval", "generation")
 builder.add_edge("generation", END)
 

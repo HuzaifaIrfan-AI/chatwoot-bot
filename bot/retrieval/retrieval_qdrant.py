@@ -42,10 +42,17 @@ retrieval_logger.warning(f"collection_name {collection_name}")
 retrieval_logger.warning(f"DOCUMENTS_RETRIEVAL_LIMIT {DOCUMENTS_RETRIEVAL_LIMIT}")
 
 
+
+
+
+
 def retrieval_node(state: BotState):
     retrieval_logger.info(f"[{state['conversation_id']}] ---RETRIEVE---")
 
     query = state["messages"][-1].content
+
+    retrieval_logger.info(f"[{state['conversation_id']}] Rewritten Query: {query}")
+
     vector = embedding_function.embed_query(query)
     
     results = client.query_points(collection_name, query=vector, limit=DOCUMENTS_RETRIEVAL_LIMIT)

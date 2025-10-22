@@ -30,6 +30,4 @@ class BotState(TypedDict):
     retrieved_documents : Annotated[list[AnyMessage], add_and_trim_documents]
     messages: Annotated[list[AnyMessage], add_and_trim_messages]
 
-    
-
     open_conversation_state: bool
