@@ -59,9 +59,25 @@ if USE_API == "ollama":
 elif USE_API == "google":
     # Initialize your query_rewriter model
     from langchain_google_genai import ChatGoogleGenerativeAI
-
     GOOGLE_API_KEY = settings.GOOGLE_API_KEY
     GOOGLE_REWRITER_MODEL = settings.GOOGLE_REWRITER_MODEL
+
+
+
+    # import vertexai
+    # from langchain_google_vertexai import ChatVertexAI
+    # from google.oauth2 import service_account
+
+    # creds = service_account.Credentials.from_service_account_file(
+    #     "gen-lang-client-0160011626-b1598658b554.json"
+    # )
+    # # --- Initialize Vertex AI ---
+    # vertexai.init(
+    #     project="gen-lang-client-0160011626",   # e.g., "my-ai-lab-123456"
+    #     location="us-central1",           # Must match your Vertex region
+    #     credentials=creds
+    # )
+
 
     query_rewriter_llm = ChatGoogleGenerativeAI(
         model=GOOGLE_REWRITER_MODEL,

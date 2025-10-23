@@ -12,6 +12,7 @@ dependencies = [
     "langchain-community>=0.3.23",
     "langchain-core>=0.3.56",
     "langchain-google-genai>=2.1.12",
+    "langchain-google-vertexai>=2.1.2",
     "langchain-mcp-adapters>=0.1.7",
     "langchain-ollama>=0.3.10",
     "langchain-openai>=0.3.16",
