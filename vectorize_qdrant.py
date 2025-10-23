@@ -67,6 +67,30 @@ else:
 
 
 
+def create_collection():
+
+
+    if client.collection_exists(collection_name=collection_name):
+        print(f"'{collection_name}' collection exist")
+    else:
+        print(f"'{collection_name}' collection not exist")
+
+        # --- 3️⃣ Ensure Collection Exists ---
+        # You must specify vector size and distance manually
+        vector_size = len(embedding_function.embed_query("test"))  # auto-detect dimension
+
+        client.recreate_collection(
+            collection_name=collection_name,
+            vectors_config=VectorParams(
+                size=vector_size,
+                distance=Distance.COSINE
+            ),
+        )
+
+
+create_collection()
+
+
 from langchain_qdrant import QdrantVectorStore
 
 qdrant = QdrantVectorStore(
@@ -84,20 +108,7 @@ def cleanup_db():
     else:
         print(f"'{collection_name}' collection not exist")
 
-
-    # --- 3️⃣ Ensure Collection Exists ---
-    # You must specify vector size and distance manually
-    vector_size = len(embedding_function.embed_query("test"))  # auto-detect dimension
-
-    client.recreate_collection(
-        collection_name=collection_name,
-        vectors_config=VectorParams(
-            size=vector_size,
-            distance=Distance.COSINE
-        ),
-    )
-
-
+    create_collection()
 
 
 import glob
