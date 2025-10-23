@@ -198,3 +198,4 @@ qdrant_storage/
 data/
 config.py
 *.bkp
+.vscode/

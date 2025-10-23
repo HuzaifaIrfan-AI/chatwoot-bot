@@ -18,15 +18,27 @@ from bot.retrieval.retrieval_qdrant import retrieval_node
 
 from logger import retrieval_logger
 
+SYSTEM_CONTENT = """
+You are a helpful query rewriter for a RAG system.
+Rewrite the latest user query for more effective document retrieval.
 
+Use the previous 5 user messages and the last AI message as context.
+
+If the current query is not related to the previous conversation,
+respond with the query itself without rewriting it.
+
+Respond only with a rewritten, retrieval-friendly version of the query.
+"""
+
+SYSTEM_MESSAGE=SystemMessage(SYSTEM_CONTENT)
 
 # Initialize your query_rewriter model
-query_rewriter_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0, api_key=OPENAI_API_KEY)
+query_rewriter_llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0, api_key=OPENAI_API_KEY)
 
 def query_rewriter_node(state: BotState):
     retrieval_logger.info(f"[{state['conversation_id']}] ---QueryRewriter---")
 
-    user_messages = [msg.content for msg in state["messages"] if isinstance(msg, HumanMessage)][-5:]
+    user_messages = [msg.content for msg in state["messages"] if isinstance(msg, HumanMessage)][-2:]
 
     last_ai_message = state["messages"][-2].content if len(state["messages"]) > 1 else None
 
@@ -34,12 +46,6 @@ def query_rewriter_node(state: BotState):
 
     # Build the rewriting prompt
     prompt = f"""
-    You are a helpful query rewriter for a RAG system.
-    Rewrite the latest user query for more effective document retrieval.
-
-    Use the previous 5 user messages and the last AI message as context.
-
-    ---
     Previous User Messages:
     {chr(10).join(user_messages) or "None"}
     ---
@@ -48,14 +54,11 @@ def query_rewriter_node(state: BotState):
     ---
     Current User Query:
     {user_query}
-    ---
-
-    Respond only with a rewritten, retrieval-friendly version of the query.
     """
 
     retrieval_logger.info(f"[{state['conversation_id']}] Query Rewriter Prompt: {prompt}")
 
-    rewritten_response = query_rewriter_llm.invoke([HumanMessage(prompt)])
+    rewritten_response = query_rewriter_llm.invoke([SYSTEM_MESSAGE, HumanMessage(prompt)])
 
     state["messages"][-1].content = rewritten_response.content
 
