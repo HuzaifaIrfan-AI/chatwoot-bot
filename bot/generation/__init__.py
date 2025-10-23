@@ -14,10 +14,10 @@ from bot.State import BotState
 from settings import settings
 OPENAI_API_KEY = settings.OPENAI_API_KEY
 OPENAI_MODEL = settings.OPENAI_MODEL
-
+    # temperature=0.5,
 llm = ChatOpenAI(
     model=OPENAI_MODEL,
-    temperature=0.5,
+
     openai_api_key=OPENAI_API_KEY
 )
 

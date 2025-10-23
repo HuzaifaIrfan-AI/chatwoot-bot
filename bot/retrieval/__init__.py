@@ -35,7 +35,7 @@ Respond only with a rewritten, retrieval-friendly version of the query.
 SYSTEM_MESSAGE=SystemMessage(SYSTEM_CONTENT)
 
 # Initialize your query_rewriter model
-query_rewriter_llm = ChatOpenAI(model="gpt-5-mini", api_key=OPENAI_API_KEY)
+query_rewriter_llm = ChatOpenAI(model="gpt-5-nano", api_key=OPENAI_API_KEY)
 # temperature=0.0
 def query_rewriter_node(state: BotState):
     retrieval_logger.info(f"[{state['conversation_id']}] ---QueryRewriter---")
