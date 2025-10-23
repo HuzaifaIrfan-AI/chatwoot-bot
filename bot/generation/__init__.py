@@ -12,14 +12,58 @@ import os
 from bot.State import BotState
 
 from settings import settings
-OPENAI_API_KEY = settings.OPENAI_API_KEY
-OPENAI_MODEL = settings.OPENAI_MODEL
-    # temperature=0.5,
-llm = ChatOpenAI(
-    model=OPENAI_MODEL,
 
-    openai_api_key=OPENAI_API_KEY
-)
+
+
+USE_API = settings.USE_API
+
+
+
+
+
+if USE_API == "ollama":
+    # Initialize your query_rewriter model
+    from langchain_ollama import ChatOllama
+
+    OLLAMA_API_URL = settings.OLLAMA_API_URL
+    OLLAMA_MODEL = settings.OLLAMA_MODEL
+
+    llm = ChatOllama(
+        base_url=OLLAMA_API_URL,
+        model=OLLAMA_MODEL
+    )
+
+    GEN_MODEL=OLLAMA_MODEL
+
+elif USE_API == "google":
+    # Initialize your query_rewriter model
+    from langchain_google_genai import ChatGoogleGenerativeAI
+
+    GOOGLE_API_KEY = settings.GOOGLE_API_KEY
+    GOOGLE_MODEL = settings.GOOGLE_MODEL
+
+    llm = ChatGoogleGenerativeAI(
+        model=GOOGLE_MODEL,
+        google_api_key=GOOGLE_API_KEY,
+        temperature=0.5,         # optional, same as OpenAI temperature
+    )
+
+    GEN_MODEL=GOOGLE_MODEL
+
+
+
+else:
+# if USE_API == "openai":
+    # Initialize your query_rewriter model
+    from langchain_openai import ChatOpenAI
+    OPENAI_API_KEY = settings.OPENAI_API_KEY
+    OPENAI_MODEL = settings.OPENAI_MODEL
+    llm = ChatOpenAI(model=OPENAI_MODEL, api_key=OPENAI_API_KEY)
+
+    GEN_MODEL=OPENAI_MODEL
+
+
+
 
 
 
@@ -32,7 +76,7 @@ from logger import generation_logger
 
 # generation_logger.info(f"SYSTEM_CONTENT: '''{SYSTEM_CONTENT}'''")
 
-generation_logger.warning(f"Using OpenAI Model'{OPENAI_MODEL}'")
+generation_logger.warning(f"Using gen Model'{GEN_MODEL}'")
 
 
 def generation_node(state: BotState) -> BotState:

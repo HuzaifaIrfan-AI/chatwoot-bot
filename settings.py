@@ -8,8 +8,22 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     KAFKA_URL: str = Field(default="kafka:9092", alias="KAFKA_URL")
 
+    USE_API: str = Field(default="openai", alias="USE_API")
+    USE_EMBEDDINGS_API: str = Field(default="openai", alias="USE_EMBEDDINGS_API")
+
+    OLLAMA_API_URL: str = Field(default="http://localhost:11434", alias="OLLAMA_API_URL")
+    OLLAMA_MODEL: str = Field(default="llama3.2", alias="OLLAMA_MODEL")
+    OLLAMA_REWRITER_MODEL: str = Field(default="llama3.2", alias="OLLAMA_REWRITER_MODEL")
+    OLLAMA_EMBEDDINGS_MODEL: str = Field(default="nomic-embed-text", alias="OLLAMA_EMBEDDINGS_MODEL")
+
+    GOOGLE_API_KEY: str = Field(default="", alias="GOOGLE_API_KEY")
+    GOOGLE_MODEL: str = Field(default="models/gemini-2.5-flash-lite", alias="GOOGLE_MODEL")
+    GOOGLE_REWRITER_MODEL: str = Field(default="models/gemini-2.5-flash-lite", alias="GOOGLE_REWRITER_MODEL")
+    GOOGLE_EMBEDDINGS_MODEL: str = Field(default="gemini-embedding-001", alias="GOOGLE_EMBEDDINGS_MODEL")
+
     OPENAI_API_KEY: str = Field(default="sk-proj-", alias="OPENAI_API_KEY")
-    OPENAI_MODEL: str = Field(default="gpt-4.1", alias="OPENAI_MODEL")
+    OPENAI_MODEL: str = Field(default="gpt-5-mini", alias="OPENAI_MODEL")
+    OPENAI_REWRITER_MODEL: str = Field(default="gpt-5-mini", alias="OPENAI_REWRITER_MODEL")
     OPENAI_EMBEDDINGS_MODEL: str = Field(default="text-embedding-3-small", alias="OPENAI_EMBEDDINGS_MODEL")
 
     REDIS_HOST: str = Field(default="redis", alias="REDIS_HOST")

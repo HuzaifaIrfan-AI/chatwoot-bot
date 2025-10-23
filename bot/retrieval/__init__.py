@@ -1,6 +1,6 @@
 
 
-from langchain_openai import ChatOpenAI
+
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 # from langchain.schema import SystemMessage, HumanMessage , AIMessage
 import os
@@ -10,7 +10,7 @@ from bot.State import BotState
 # Access environment variables
 from settings import settings
 
-OPENAI_API_KEY = settings.OPENAI_API_KEY
+
 
 # from bot.retrieval.retrieval_mcp_qdrant import retrieval_node
 from bot.retrieval.retrieval_qdrant import retrieval_node
@@ -34,8 +34,60 @@ Respond only with a rewritten, retrieval-friendly version of the query.
 
 SYSTEM_MESSAGE=SystemMessage(SYSTEM_CONTENT)
 
-# Initialize your query_rewriter model
-query_rewriter_llm = ChatOpenAI(model="gpt-5-nano", api_key=OPENAI_API_KEY)
+USE_API = settings.USE_API
+
+
+
+
+
+
+if USE_API == "ollama":
+    # Initialize your query_rewriter model
+    from langchain_ollama import ChatOllama
+
+    OLLAMA_API_URL = settings.OLLAMA_API_URL
+    OLLAMA_REWRITER_MODEL = settings.OLLAMA_REWRITER_MODEL
+
+    query_rewriter_llm = ChatOllama(
+        base_url=OLLAMA_API_URL,
+        model=OLLAMA_REWRITER_MODEL
+    )
+
+    REWRITER_MODEL=OLLAMA_REWRITER_MODEL
+
+
+elif USE_API == "google":
+    # Initialize your query_rewriter model
+    from langchain_google_genai import ChatGoogleGenerativeAI
+
+    GOOGLE_API_KEY = settings.GOOGLE_API_KEY
+    GOOGLE_REWRITER_MODEL = settings.GOOGLE_REWRITER_MODEL
+
+    query_rewriter_llm = ChatGoogleGenerativeAI(
+        model=GOOGLE_REWRITER_MODEL,
+        google_api_key=GOOGLE_API_KEY,
+        temperature=0.0,         # optional, same as OpenAI temperature
+    )
+
+    REWRITER_MODEL=GOOGLE_REWRITER_MODEL
+
+
+
+else:
+# if USE_API == "openai":
+    # Initialize your query_rewriter model
+    from langchain_openai import ChatOpenAI
+    OPENAI_API_KEY = settings.OPENAI_API_KEY
+    OPENAI_REWRITER_MODEL = settings.OPENAI_REWRITER_MODEL
+    query_rewriter_llm = ChatOpenAI(model=OPENAI_REWRITER_MODEL, api_key=OPENAI_API_KEY)
+
+    REWRITER_MODEL=OPENAI_REWRITER_MODEL
+
+
+
+retrieval_logger.warning(f"Using rewriter Model'{REWRITER_MODEL}'")
+
+
 # temperature=0.0
 def query_rewriter_node(state: BotState):
     retrieval_logger.info(f"[{state['conversation_id']}] ---QueryRewriter---")
