@@ -24,6 +24,8 @@ Rewrite the latest user query for more effective document retrieval.
 
 Use the previous AI messages as context.
 
+if you do not know the context, word or acronym, do not rewrite the query.
+
 If the current query is not related to the previous conversation,
 respond with the query itself without rewriting it.
 
@@ -33,8 +35,8 @@ Respond only with a rewritten, retrieval-friendly version of the query.
 SYSTEM_MESSAGE=SystemMessage(SYSTEM_CONTENT)
 
 # Initialize your query_rewriter model
-query_rewriter_llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0, api_key=OPENAI_API_KEY)
-
+query_rewriter_llm = ChatOpenAI(model="gpt-5-mini", api_key=OPENAI_API_KEY)
+# temperature=0.0
 def query_rewriter_node(state: BotState):
     retrieval_logger.info(f"[{state['conversation_id']}] ---QueryRewriter---")
 
