@@ -22,7 +22,7 @@ SYSTEM_CONTENT = """
 You are a helpful query rewriter for a RAG system.
 Rewrite the latest user query for more effective document retrieval.
 
-Use the previous 5 user messages and the last AI message as context.
+Use the previous AI messages as context.
 
 If the current query is not related to the previous conversation,
 respond with the query itself without rewriting it.
@@ -38,17 +38,17 @@ query_rewriter_llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0, api_key=OPE
 def query_rewriter_node(state: BotState):
     retrieval_logger.info(f"[{state['conversation_id']}] ---QueryRewriter---")
 
-    user_messages = [msg.content for msg in state["messages"] if isinstance(msg, HumanMessage)][-2:]
+    user_messages = [msg.content for msg in state["messages"] if isinstance(msg, HumanMessage)][-3:-2]
 
     last_ai_message = state["messages"][-2].content if len(state["messages"]) > 1 else None
 
     user_query = state["messages"][-1].content
 
     # Build the rewriting prompt
+    # Previous User Messages:
+    # {chr(10).join(user_messages) or "None"}
+    # ---
     prompt = f"""
-    Previous User Messages:
-    {chr(10).join(user_messages) or "None"}
-    ---
     Last AI Message:
     {last_ai_message or "None"}
     ---
